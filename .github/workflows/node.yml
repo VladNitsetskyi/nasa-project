@@ -1,0 +1,17 @@
+name: Nasa Project CI
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+      - name: Use NodeJS version 12.22
+        uses: action/setup-node@v2
+        with:
+          node-version: '12.22'
+      - run: npm install
+      - run: BUILD_PATH=../server/public npm run build --prefix client
