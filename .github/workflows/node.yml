@@ -6,6 +6,7 @@ on:
     branches: [master]
 jobs:
   build:
+    environment: test_env
     env:
       CI: true
       DB_PASSWORD: ${{secrets.DB_PASSWORD}}
