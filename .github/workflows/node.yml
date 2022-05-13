@@ -6,6 +6,14 @@ on:
     branches: [master]
 jobs:
   build:
+    env:
+      CI: true
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      DB_USER_NAME: ${{secrets.DB_USER_NAME}}
+      DB_NAME: ${{secrets.DB_NAME}}
+    strategy:
+      matrix:
+        mongodb-version: ['4.4']
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -13,5 +21,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '12.22'
+      - name: Set up Mongo for Testing
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: ${{matrix.mongodb-version}}
+          mongodb-username: ${{secrets.DB_USER_NAME}}
+          mongodb-password: ${{secrets.DB_PASSWORD}}
+          mongodb-db: ${{secrets.DB_NAME}}
       - run: npm install
       - run: BUILD_PATH=../server/public npm run build --prefix client
+      - run: npm run test
