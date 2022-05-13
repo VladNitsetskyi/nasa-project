@@ -14,6 +14,4 @@ jobs:
         with:
           node-version: '12.22'
       - run: npm install
-      - run: npm install --prefix client
-      - run: npm install --prefix server
       - run: BUILD_PATH=../server/public npm run build --prefix client
